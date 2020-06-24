@@ -8,7 +8,7 @@ import glob
 
 if __name__ == '__main__':
 
-	# CHEQUEAR VERSION DE PYTHON
+	# CHEQUEAR VERSION DE 
 	if (sys.version_info.major != 3 ):
 		print("Está usando la versión de Python: "+str(sys.version))
 		sys.exit("Se debe usar Python 3")

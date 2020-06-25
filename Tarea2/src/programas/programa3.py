@@ -3,7 +3,6 @@
 import sys
 import io
 import nltk
-import re
 
 def tokenize(text):
     return list(text)
@@ -31,18 +30,37 @@ if __name__ == '__main__':
     try:
       tree = parse(s)
       if tree:
-          nuevo = s.replace('_',';')#para poder usar un expresion regular con \w, que este reconoce el barrabaja para cuando suplante
+          nuevo = s.replace('(','\\(')#para poder usar un expresion regular con \w, que este reconoce el barrabaja para cuando suplante
+          nuevo = nuevo.replace(')','\\)')
+          i=0
+          index=0
+          while index!=-1 :
+              index = nuevo.find('_', index)
+              #print(index)
+              #print(i % 2)
+              if(i % 2 == 0):
+                  nuevo = nuevo.replace('_','\\emph{',1)
+                  #print('entro par')
+              else:
+                  nuevo = nuevo.replace('_','}',1)
+                  #print('entro impar')
+              i = i + 1
+              
           i = 0
           index = 0
-          while index<len(nuevo) :
+          while index!=-1 :
+              index = nuevo.find('*', index)
+              #print(index)
+              #print(i % 2)
               if(i % 2 == 0):
-                  nuevo_aux = nuevo.replace('*','\\textbf{')
-              else :
-                  nuevo_aux = nuevo_aux.replace('*','}')
-                 
-                i = i +1
+                  nuevo = nuevo.replace('*','\\textbf{',1)
+                  #print('entro par')
+              else:
+                  nuevo = nuevo.replace('*','}',1)
+                  #print('entro impar')
+              i = i + 1
           #nuevo = re.sub(r'\*\w*\*',' \\textbf{}')
-          salida = "PERTENECE"
+          salida = nuevo
       else:
           salida = "NO PERTENECE"
     except ValueError:

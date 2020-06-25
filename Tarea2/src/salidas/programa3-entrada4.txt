@@ -1,1 +1,1 @@
-PERTENECE
+Este es un \emph{ejemplo} de una entrada \textbf{mas larga}. El ejemplo tiene \emph{dos} enunciados \(y tiene \(parentesis\), \textbf{negrita} y \emph{cursiva}\).

@@ -1,1 +1,1 @@
-PERTENECE
+Este texto esta en \textbf{negrita}, y este esta en \emph{cursiva}. Tambien podemos usar \(parentesis\).

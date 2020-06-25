@@ -27,7 +27,9 @@ if __name__ == '__main__':
     try:
       tree = parse(s)
       if tree:
-          salida = "PERTENECE"
+          nuevo = s.replace('.','j')
+          nuevo = nuevo.replace('|','.')
+          salida = nuevo.replace('j','|')
       else:
           salida = "NO PERTENECE"
     except ValueError:

@@ -3,6 +3,7 @@
 import sys
 import io
 import nltk
+from nltk.tree import Tree
 
 def tokenize(text):
     return list(text)
@@ -18,6 +19,19 @@ def parse(s):
     tree = [t for t in parser.parse(s_tok)][:1]
     return tree
 
+def reemplazar(t):
+    if t is Tree:
+        for node in t:
+            reemplazar (node)
+    else:
+        print("hoja:",t)
+        if t=='|':
+            t='.'
+        else:
+            if t=='.':
+                t='|'
+
+
 if __name__ == '__main__':
     archivo_entrada = sys.argv[1]
     archivo_salida = sys.argv[2]
@@ -25,11 +39,17 @@ if __name__ == '__main__':
     s = f.read()
     f.close()
     try:
+      separator=""
       tree = parse(s)
       if tree:
-          nuevo = s.replace('.','j')
-          nuevo = nuevo.replace('|','.')
-          salida = nuevo.replace('j','|')
+        t=tree[0]
+        for leafPos in t.treepositions('leaves'):
+            if t[leafPos] == '|':
+               t[leafPos] = "."
+            else:
+                if t[leafPos] == '.':
+                    t[leafPos] = "|"
+        salida=separator.join(t.leaves())
       else:
           salida = "NO PERTENECE"
     except ValueError:
@@ -37,8 +57,5 @@ if __name__ == '__main__':
     f = io.open(archivo_salida, 'w', newline='\n', encoding='utf-8')
     f.write(salida)
     f.close()
-
-
-
 
 

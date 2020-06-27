@@ -3,6 +3,7 @@
 import sys
 import io
 import nltk
+from nltk.tree import Tree
 
 def tokenize(text):
     return list(text)
@@ -28,39 +29,38 @@ if __name__ == '__main__':
     s = f.read()
     f.close()
     try:
+      separator=""
       tree = parse(s)
       if tree:
-          nuevo = s.replace('(','\\(')#para poder usar un expresion regular con \w, que este reconoce el barrabaja para cuando suplante
-          nuevo = nuevo.replace(')','\\)')
-          i=0
-          index=0
-          while index!=-1 :
-              index = nuevo.find('_', index)
-              #print(index)
-              #print(i % 2)
-              if(i % 2 == 0):
-                  nuevo = nuevo.replace('_','\\emph{',1)
-                  #print('entro par')
-              else:
-                  nuevo = nuevo.replace('_','}',1)
-                  #print('entro impar')
-              i = i + 1
-              
-          i = 0
-          index = 0
-          while index!=-1 :
-              index = nuevo.find('*', index)
-              #print(index)
-              #print(i % 2)
-              if(i % 2 == 0):
-                  nuevo = nuevo.replace('*','\\textbf{',1)
-                  #print('entro par')
-              else:
-                  nuevo = nuevo.replace('*','}',1)
-                  #print('entro impar')
-              i = i + 1
-          #nuevo = re.sub(r'\*\w*\*',' \\textbf{}')
-          salida = nuevo
+        t=tree[0]
+        contAster=0;
+        contGuion=0;
+        for leafPos in t.treepositions('leaves'):
+            
+            if t[leafPos] == '*':
+                if contAster % 2 == 0:
+                    t[leafPos] = "\\textbf{"
+                else:
+                     t[leafPos] ="}"
+                contAster+=1
+                
+            if t[leafPos] == '_':
+                if contGuion % 2 == 0:
+                    t[leafPos] = "\\emph{"
+                else:
+                     t[leafPos] ="}"
+                contGuion+=1
+                
+            if t[leafPos] == '(':
+                t[leafPos] = "\\("
+                
+            if t[leafPos] == ')':
+                t[leafPos] = "\\)"
+               
+                
+                
+                
+        salida=separator.join(t.leaves())
       else:
           salida = "NO PERTENECE"
     except ValueError:
